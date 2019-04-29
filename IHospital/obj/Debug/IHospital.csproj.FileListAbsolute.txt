@@ -1,0 +1,7 @@
+D:\Studies\SzTF2\beadando\IHospital\IHospital\bin\Debug\IHospital.exe.config
+D:\Studies\SzTF2\beadando\IHospital\IHospital\bin\Debug\IHospital.exe
+D:\Studies\SzTF2\beadando\IHospital\IHospital\bin\Debug\IHospital.pdb
+D:\Studies\SzTF2\beadando\IHospital\IHospital\obj\Debug\IHospital.csprojAssemblyReference.cache
+D:\Studies\SzTF2\beadando\IHospital\IHospital\obj\Debug\IHospital.csproj.CoreCompileInputs.cache
+D:\Studies\SzTF2\beadando\IHospital\IHospital\obj\Debug\IHospital.exe
+D:\Studies\SzTF2\beadando\IHospital\IHospital\obj\Debug\IHospital.pdb
