@@ -9,6 +9,7 @@ namespace IHospital
 {
     class Rendező
     {
+        private readonly int MaxPercek = 480;
         public List<Beteg> Betegek { get; set; }
 
         public Rendező (List<Beteg> betegek)
@@ -19,55 +20,29 @@ namespace IHospital
 
         public void Beosztás()
         {
-            Műtő műtő1 = new Műtő(new List<Beteg>(), 0);
-            Műtő műtő2 = new Műtő(new List<Beteg>(), 0);
-            Műtő műtő3 = new Műtő(new List<Beteg>(), 0);
+            Műtő műtő1 = new Műtő(new List<Beteg>());
+            Műtő műtő2 = new Műtő(new List<Beteg>());
+            Műtő műtő3 = new Műtő(new List<Beteg>());
 
-            VisszaLépésselBeoszt(műtő1, 480);
+            VisszaLépésselBeoszt();
 
 
         }
 
-        public static Beteg KnapSackRecursive(Beteg[] betegek, int kapacitás)
+        private void Beoszt(int szint, int[] megoldások, int[] legjobbMegoldás)
         {
-            // If there are no items or capacity is 0 then return 0
-            if (betegek.Length == 0 || kapacitás == 0) return 0;
 
-            // If there is one item and it fits then return it's value
-            // otherwise return 0
-            if (betegek.Length == 1)
+
+
+        }
+
+        public Műtő VisszaLépésselBeoszt(Műtő műtő, List<Beteg> betegek)
+        {
+            for(int i = 0; i<betegek.Count; i++)
             {
-                return betegek[0].Diagnózis.Műtétidőtartam < kapacitás ? betegek[0] : null;
+                Beteg[] többiBeteg = betegek.ToArray();
+                többiBeteg.
             }
-
-            // keep track of the best value seen.
-            Beteg legjobb;
-            for (int i = 0; i < betegek.Length; i++)
-            {
-                // This is an array of the other items.
-                var többiBeteg = betegek.Take(i).Concat(betegek.Skip(i + 1)).ToArray();
-
-                // Calculate the best value without using the current item.
-                Beteg mostaniNélkül = KnapSackRecursive(többiBeteg, kapacitás);
-                Beteg mostaniVal;
-
-                // If the current item fits then calculate the best value for
-                // a capacity less it's weight and with it removed from contention
-                // and add the current items value to that.
-                if (betegek[i].Diagnózis.Műtétidőtartam <= kapacitás)
-                {
-                    mostaniVal = KnapSackRecursive(többiBeteg, kapacitás - betegek[i].Diagnózis.Műtétidőtartam)
-                        + (int) betegek[i].Diagnózis.Súlyosság;
-                }
-
-                // The current best is the max of the with or without.
-                Beteg helyiLegjobb = mostaniVal.Diagnózis.Súlyosság > mostaniNélkül.Diagnózis.Súlyosság ? mostaniVal : mostaniNélkül;
-
-                // determine if the current best is the overall best.
-                if (helyiLegjobb.Diagnózis.Súlyosság > legjobb.Diagnózis.Súlyosság) legjobb = helyiLegjobb;
-            }
-
-            return legjobb;
         }
 
         private void BetegRendezés()
@@ -198,4 +173,5 @@ namespace IHospital
             if (beteg != null) Betegek.Remove(beteg);
         }
     }
+
 }
