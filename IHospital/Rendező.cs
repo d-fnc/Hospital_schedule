@@ -31,6 +31,12 @@ namespace IHospital
             Műtő műtőA = VisszaLépésselBeoszt("Quelana");
             Műtő műtőB = VisszaLépésselBeoszt("Quelaan");
             Műtő műtőC = VisszaLépésselBeoszt("Quelaag");
+            KiírKihasználtság(műtőA, műtőB, műtőC); // Egyszerűbb ellenőrzés végett
+        }
+
+        private void KiírKihasználtság(Műtő műtőA, Műtő műtőB, Műtő műtőC)
+        {
+            Console.WriteLine();
             Console.WriteLine(műtőA.getNév() + " kihasználtsága: " + műtőA.hasznaltPercek + " perc; Értéke: " + műtőA.SumSúlyosság);
             Console.WriteLine(műtőB.getNév() + " kihasználtsága: " + műtőB.hasznaltPercek + " perc; Értéke: " + műtőB.SumSúlyosság);
             Console.WriteLine(műtőC.getNév() + " kihasználtsága: " + műtőC.hasznaltPercek + " perc; Értéke: " + műtőC.SumSúlyosság);
@@ -58,11 +64,15 @@ namespace IHospital
             }
             catch (NincsenekBetegekKivétel e)
             {
+                Console.WriteLine(Environment.NewLine + "!!!!!!!!!!!!");
                 Console.WriteLine("Nem lehet beosztást készíteni a " + e.msg + " műtőhöz, mert nincs elég beteg!");
+                Console.WriteLine("!!!!!!!!!!!!");
             }
-            catch(TúlSokSzabadIdőKivétel e)
+            catch (TúlSokSzabadIdőKivétel e)
             {
+                Console.WriteLine(Environment.NewLine + "!!!!!!!!!!!!");
                 Console.WriteLine("A " + e.msg + " műtőben több mint 2 óra szabad idő maradt a napra!");
+                Console.WriteLine("!!!!!!!!!!!!");
             }
             return műtő;
         }

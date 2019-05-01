@@ -14,19 +14,24 @@ namespace IHospital
         private static Rendező rendező;
         static void Main(string[] args)
         {
+            bool TöbbNap = false;
             List<Beteg> BetegLista = BetegListaOlvas();
             if(BetegLista.Count == 0)
             {
                 Console.WriteLine("A megadott fájl formátuma hibás, nem használható");
             }
             rendező = new Rendező(BetegLista, műtés: Program.Műtés, felvétel: Program.Felvétel);
-            BetegFelvétel();
-            BetegTörlés();
-            BetegekKiír();
+            do
+            {
+                BetegFelvétel();
+                BetegTörlés();
+                BetegekKiír();
 
-            rendező.Beosztás();
+                rendező.Beosztás();
 
-            Console.ReadLine();
+                Console.WriteLine(Environment.NewLine + "Szeretne még egy napot beosztani?" + Environment.NewLine + "I - igen, N - nem");
+                TöbbNap = Console.ReadLine().ToLower().Equals("i") ? true : false;
+            } while (TöbbNap);
         }
 
         public static void Felvétel(Beteg beteg)
