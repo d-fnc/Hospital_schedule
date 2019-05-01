@@ -19,8 +19,7 @@ namespace IHospital
             {
                 Console.WriteLine("A megadott fájl formátuma hibás, nem használható");
             }
-            rendező = new Rendező(BetegLista, műtés: Program.Műtés);
-            BetegekKiír();
+            rendező = new Rendező(BetegLista, műtés: Program.Műtés, felvétel: Program.Felvétel);
             BetegFelvétel();
             BetegTörlés();
             BetegekKiír();
@@ -30,6 +29,12 @@ namespace IHospital
             Console.ReadLine();
         }
 
+        public static void Felvétel(Beteg beteg)
+        {
+            Console.WriteLine("Új beteg érkzett: " + beteg.Név);
+            rendező.Betegek.Add(beteg);
+            rendező.BetegRendezés();
+        }
         public static bool Műtés(Beteg beteg)
         {
             if (rendező.Betegek.Contains(beteg))

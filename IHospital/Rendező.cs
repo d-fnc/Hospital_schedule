@@ -10,13 +10,17 @@ namespace IHospital
 {
     class Rendező
     {
+        public delegate void BetegFelvét(Beteg beteg);
+        public event BetegFelvét Felvétel;
+
         public delegate bool BetegMűtés(Beteg beteg);
         public event BetegMűtés Műtés;
 
         private readonly int MaxPercek = 480;
         public List<Beteg> Betegek { get; set; }
-        public Rendező (List<Beteg> betegek, BetegMűtés műtés)
+        public Rendező (List<Beteg> betegek, BetegMűtés műtés, BetegFelvét felvétel)
         {
+            this.Felvétel = felvétel;
             this.Műtés = műtés;
             this.Betegek = betegek;
             BetegRendezés();
@@ -102,7 +106,7 @@ namespace IHospital
             return összÉrték;
         }
 
-        private void BetegRendezés()
+        public void BetegRendezés()
         {
             Betegek.Sort((x,y) => y.Diagnózis.Súlyosság.CompareTo(x.Diagnózis.Súlyosság));
         }
@@ -166,13 +170,13 @@ namespace IHospital
             switch(típus)
             {
                 case 1:
-                    Betegek.Add(new Beteg(név, életkor, new VakbélGyulladás(súlyosság, idő, váladék, gyulladásmértéke, elhelyezkedés)));
+                    Felvétel(new Beteg(név, életkor, new VakbélGyulladás(súlyosság, idő, váladék, gyulladásmértéke, elhelyezkedés)));
                     break;
                 case 2:
-                    Betegek.Add(new Beteg(név, életkor, new EpehólyagGyulladás(súlyosság, idő, váladék, gyulladásmértéke, elhelyezkedés)));
+                    Felvétel(new Beteg(név, életkor, new EpehólyagGyulladás(súlyosság, idő, váladék, gyulladásmértéke, elhelyezkedés)));
                     break;
                 case 3:
-                    Betegek.Add(new Beteg(név, életkor, new BordaköziIdegzsábaGyulladás(súlyosság, idő, váladék, gyulladásmértéke, elhelyezkedés)));
+                    Felvétel(new Beteg(név, életkor, new BordaköziIdegzsábaGyulladás(súlyosság, idő, váladék, gyulladásmértéke, elhelyezkedés)));
                     break;
                 default:
                     Console.WriteLine("/watch?v=SrxedErOyrs");
@@ -206,13 +210,13 @@ namespace IHospital
             switch (típus)
             {
                 case 1:
-                    Betegek.Add(new Beteg(név, életkor, new VégtagTörés(súlyosság, idő, nyílt, elhelyezkedés)));
+                    Felvétel(new Beteg(név, életkor, new VégtagTörés(súlyosság, idő, nyílt, elhelyezkedés)));
                     break;
                 case 2:
-                    Betegek.Add(new Beteg(név, életkor, new CsípőTörés(súlyosság, idő, nyílt, elhelyezkedés)));
+                    Felvétel(new Beteg(név, életkor, new CsípőTörés(súlyosság, idő, nyílt, elhelyezkedés)));
                     break;
                 case 3:
-                    Betegek.Add(new Beteg(név, életkor, new GerincTörés(súlyosság, idő, nyílt, elhelyezkedés)));
+                    Felvétel(new Beteg(név, életkor, new GerincTörés(súlyosság, idő, nyílt, elhelyezkedés)));
                     break;
                 default:
                     Console.WriteLine("/watch?v=SrxedErOyrs");
