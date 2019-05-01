@@ -4,50 +4,107 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IHospital.Diagnózis;
+using IHospital.Entitások;
 
 namespace IHospital
 {
     class Rendező
     {
+        public delegate bool BetegMűtés(Beteg beteg);
+        public event BetegMűtés Műtés;
+
         private readonly int MaxPercek = 480;
         public List<Beteg> Betegek { get; set; }
-
-        public Rendező (List<Beteg> betegek)
+        public Rendező (List<Beteg> betegek, BetegMűtés műtés)
         {
+            this.Műtés = műtés;
             this.Betegek = betegek;
             BetegRendezés();
         }
 
         public void Beosztás()
         {
-            Műtő műtő1 = new Műtő(new List<Beteg>());
-            Műtő műtő2 = new Műtő(new List<Beteg>());
-            Műtő műtő3 = new Műtő(new List<Beteg>());
-
-            VisszaLépésselBeoszt();
-
-
+            Műtő műtőA = VisszaLépésselBeoszt("Quelana");
+            Műtő műtőB = VisszaLépésselBeoszt("Quelaan");
+            Műtő műtőC = VisszaLépésselBeoszt("Quelaag");
+            Console.WriteLine(műtőA.getNév() + " kihasználtsága: " + műtőA.hasznaltPercek + " perc; Értéke: " + műtőA.SumSúlyosság);
+            Console.WriteLine(műtőB.getNév() + " kihasználtsága: " + műtőB.hasznaltPercek + " perc; Értéke: " + műtőB.SumSúlyosság);
+            Console.WriteLine(műtőC.getNév() + " kihasználtsága: " + műtőC.hasznaltPercek + " perc; Értéke: " + műtőC.SumSúlyosság);
         }
 
-        private void Beoszt(int szint, int[] megoldások, int[] legjobbMegoldás)
+        private Műtő VisszaLépésselBeoszt(String MűtőNév)
         {
-
-
-
-        }
-
-        public Műtő VisszaLépésselBeoszt(Műtő műtő, List<Beteg> betegek)
-        {
-            for(int i = 0; i<betegek.Count; i++)
+            Műtő műtő = new Műtő(MűtőNév);
+            try
             {
-                Beteg[] többiBeteg = betegek.ToArray();
-                többiBeteg.
+                if (Betegek.Count() == 0) throw new NincsenekBetegekKivétel(műtő.getNév());
+                List<Beteg> BetegekMásolat = Betegek.ToList();
+                int[] megoldás = new int[Betegek.Count()];
+                int[] legjobbMegoldás = new int[Betegek.Count()];
+                Beoszt(0, 0, megoldás, legjobbMegoldás);
+                for (int i = 0; i < legjobbMegoldás.Length; i++)
+                {
+                    if (legjobbMegoldás[i] == 1)
+                    {
+                        műtő.Beoszt(BetegekMásolat[i]);
+                        Műtés(BetegekMásolat[i]);
+                    }
+                }
+                if (műtő.hasznaltPercek <= 360) throw new TúlSokSzabadIdőKivétel(műtő.getNév());
             }
+            catch (NincsenekBetegekKivétel e)
+            {
+                Console.WriteLine("Nem lehet beosztást készíteni a " + e.msg + " műtőhöz, mert nincs elég beteg!");
+            }
+            catch(TúlSokSzabadIdőKivétel e)
+            {
+                Console.WriteLine("A " + e.msg + " műtőben több mint 2 óra szabad idő maradt a napra!");
+            }
+            return műtő;
+        }
+
+        private void Beoszt(int szint, int hasznaltPercek, int[] megoldás, int[] legjobbMegoldás)
+        {
+            if (szint == Betegek.Count())
+            {
+                if (BeosztásÉrték(megoldás) > BeosztásÉrték(legjobbMegoldás))
+                {
+                    for(int i=0; i<megoldás.Length; i++)
+                    {
+                        legjobbMegoldás[i] = megoldás[i];
+                    }
+                }
+            }
+            else
+            {
+                if (hasznaltPercek + Betegek[szint].Diagnózis.Műtétidőtartam <= MaxPercek)
+                {
+                    megoldás[szint] = 1;
+                    Beoszt(szint + 1, hasznaltPercek + Betegek[szint].Diagnózis.Műtétidőtartam, megoldás, legjobbMegoldás);
+                }
+                else
+                {
+                    megoldás[szint] = 0;
+                    Beoszt(szint + 1, hasznaltPercek, megoldás, legjobbMegoldás);
+                }
+            }
+
+
+        }
+
+        private int BeosztásÉrték(int[] beosztás)
+        {
+            int összÉrték = 0;
+            for (int i=0; i<beosztás.Length; i++)
+            {
+                if (beosztás[i] == 1) összÉrték += (int)Betegek[i].Diagnózis.Súlyosság;
+            }
+            return összÉrték;
         }
 
         private void BetegRendezés()
         {
-            Betegek.Sort((x,y) => x.Diagnózis.Súlyosság.CompareTo(y.Diagnózis.Súlyosság));
+            Betegek.Sort((x,y) => y.Diagnózis.Súlyosság.CompareTo(x.Diagnózis.Súlyosság));
         }
 
         public void BetegFelvétel()

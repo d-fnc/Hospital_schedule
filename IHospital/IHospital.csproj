@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Beteg.cs" />
+    <Compile Include="Entitások\Beteg.cs" />
     <Compile Include="Diagnózis\BordaköziIdegzsábaGyulladás.cs" />
     <Compile Include="Diagnózis\CsípőTörés.cs" />
     <Compile Include="Diagnózis\EpehólyagGyulladás.cs" />
@@ -55,7 +55,8 @@
     <Compile Include="Diagnózis\Enumok\Súlyosság.cs" />
     <Compile Include="Diagnózis\VakbélGyulladás.cs" />
     <Compile Include="Diagnózis\VégtagTörés.cs" />
-    <Compile Include="Műtő.cs" />
+    <Compile Include="Entitások\Kivételek.cs" />
+    <Compile Include="Entitások\Műtő.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendező.cs" />

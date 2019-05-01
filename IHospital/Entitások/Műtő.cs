@@ -11,6 +11,7 @@ namespace IHospital
         public List<Beteg> betegek = new List<Beteg>();
         public int hasznaltPercek;
         public int SumSúlyosság;
+        private string név;
 
         public void Beoszt(Beteg beteg)
         {
@@ -19,12 +20,15 @@ namespace IHospital
             SumSúlyosság += (int) beteg.Diagnózis.Súlyosság;
         }
 
-        public Műtő Másolat()
+        public Műtő(String név)
         {
-            return new Műtő(betegek);
+            betegek = new List<Beteg>();
+            hasznaltPercek = 0;
+            SumSúlyosság = 0;
+            this.név = név;
         }
 
-        public Műtő(List<Beteg> betegek)
+        public Műtő(List<Beteg> betegek, String név)
         {
             this.betegek = betegek;
             foreach (var beteg in betegek)
@@ -33,6 +37,11 @@ namespace IHospital
                 this.SumSúlyosság += (int)beteg.Diagnózis.Súlyosság;
             }
 
+        }
+
+        public string getNév()
+        {
+            return név;
         }
     }
 }

@@ -1,0 +1,7 @@
+A beolvasandó fájl az alábbi értékekből állhat:
+
+név;kor;gyulladás;(vakbél/epehólyag/bordaközi);idő;súlyosság(1-7);(i/n);mérték(1-3);elhelyezkedése
+név;kor;törés;(végtag,gerinc,csípő);idő;súlyosság(1-7);(i/n);elhelyezkedése
+
+Ezek ismétlődve, sortöréssel elválasztva állhatnak. 
+Helye: bin/Debug kell legyen; ahol már van egy alap.txt fájl ami az alap működést jól demonstrálja.
