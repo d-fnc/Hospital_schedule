@@ -129,7 +129,7 @@ namespace IHospital
                     GyulladásBetegFelvétel(név, életkor);
                     break;
                 default:
-                    Console.WriteLine("/watch?v=SrxedErOyrs");
+                    Console.WriteLine("Invalid érték");
                     break;
             }
 
@@ -159,7 +159,7 @@ namespace IHospital
             GyulladásMérték gyulladásmértéke = (GyulladásMérték)int.Parse(Console.ReadLine());
 
             Console.WriteLine("Váladékos-e a gyulladás? " + Environment.NewLine + "I - igen, N - nem");
-            bool váladék = Console.ReadLine() == "i" ? true : false;
+            bool váladék = Console.ReadLine().ToLower().Equals("i") ? true : false;
 
             Console.WriteLine("Mi az elhelyezkedése a gyulladásnak? ");
             string elhelyezkedés = Console.ReadLine();
@@ -179,7 +179,7 @@ namespace IHospital
                     Felvétel(new Beteg(név, életkor, new BordaköziIdegzsábaGyulladás(súlyosság, idő, váladék, gyulladásmértéke, elhelyezkedés)));
                     break;
                 default:
-                    Console.WriteLine("/watch?v=SrxedErOyrs");
+                    Console.WriteLine("Invalid érték");
                     return;
             }
         }
@@ -199,7 +199,7 @@ namespace IHospital
             Súlyosság súlyosság = (Súlyosság) int.Parse(Console.ReadLine());
 
             Console.WriteLine("Nyílt-e a törés? " + Environment.NewLine + "I - igen, N - nem");
-            bool nyílt = Console.ReadLine() == "i" ? true : false;
+            bool nyílt = Console.ReadLine().ToLower().Equals("i") ? true : false;
 
             Console.WriteLine("Mi az elhelyezkedése a törésnek? ");
             string elhelyezkedés = Console.ReadLine();
@@ -219,7 +219,7 @@ namespace IHospital
                     Felvétel(new Beteg(név, életkor, new GerincTörés(súlyosság, idő, nyílt, elhelyezkedés)));
                     break;
                 default:
-                    Console.WriteLine("/watch?v=SrxedErOyrs");
+                    Console.WriteLine("Invalid érték");
                     return;
             }
 
@@ -228,10 +228,10 @@ namespace IHospital
 
         public void BetegTörlés()
         {
-            Console.WriteLine("Adja meg a törlendő beteg nevét!");
+            Console.WriteLine("Adja meg a műtendő beteg nevét!");
             string név = Console.ReadLine();
             Beteg beteg = Betegek.Find(x => x.Név.Equals(név));
-            if (beteg != null) Betegek.Remove(beteg);
+            if (beteg != null) Műtés(beteg);
         }
     }
 

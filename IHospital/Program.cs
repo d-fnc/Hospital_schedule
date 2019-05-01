@@ -51,7 +51,7 @@ namespace IHospital
             do
             {
                 Console.WriteLine("Szeretne új beteget felvenni?" + Environment.NewLine + "I - igen, N - nem");
-                ujBeteg = Console.ReadLine() == "i" ? true : false;
+                ujBeteg = Console.ReadLine().ToLower().Equals("i") ? true : false;
                 if (ujBeteg) rendező.BetegFelvétel();
             } while (ujBeteg);
         }
@@ -61,8 +61,8 @@ namespace IHospital
             bool betegTörlés = false;
             do
             {
-                Console.WriteLine("Szeretne beteget törölni?" + Environment.NewLine + "I - igen, N - nem");
-                betegTörlés = Console.ReadLine() == "i" ? true : false;
+                Console.WriteLine("Szeretne beteget műteni?(soron kívül)" + Environment.NewLine + "I - igen, N - nem");
+                betegTörlés = Console.ReadLine().ToLower().Equals("i") ? true : false;
                 if (betegTörlés) rendező.BetegTörlés();
             } while (betegTörlés);
         }
