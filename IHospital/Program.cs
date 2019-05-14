@@ -15,8 +15,8 @@ namespace IHospital
         static void Main(string[] args)
         {
             bool TöbbNap = false;
-            List<Beteg> BetegLista = BetegListaOlvas();
-            if(BetegLista.Count == 0)
+            LancoltLista BetegLista = BetegListaOlvas();
+            if(BetegLista.Size() == 0)
             {
                 Console.WriteLine("A megadott fájl formátuma hibás, nem használható");
             }
@@ -38,17 +38,11 @@ namespace IHospital
         {
             Console.WriteLine("Új beteg érkzett: " + beteg.Név);
             rendező.Betegek.Add(beteg);
-            rendező.BetegRendezés();
         }
-        public static bool Műtés(Beteg beteg)
+        public static void Műtés(Beteg beteg)
         {
-            if (rendező.Betegek.Contains(beteg))
-            {
-                Console.WriteLine(beteg.Név + " műtésre került! Mihamarabbi jobbulást!");
-                rendező.Betegek.Remove(beteg);
-                return true;
-            }
-            return false;
+            rendező.Betegek.Remove(beteg);
+            Console.WriteLine(beteg.Név + " műtésre került! Mihamarabbi jobbulást!");
         }
         private static void BetegFelvétel()
         {
@@ -75,17 +69,13 @@ namespace IHospital
         private static void BetegekKiír()
         {
             Console.WriteLine("Betegek" + Environment.NewLine);
-            foreach (Beteg beteg in rendező.Betegek)
-            {
-                // Console.WriteLine(beteg.Név + " " + beteg.Diagnózis.Súlyosság + " " + beteg.Diagnózis.Műtétidőtartam); // Egyszerűsített kiírás - debughoz
-                beteg.Kiír();
-            }
+            rendező.Betegek.WriteElems();
             Console.WriteLine();
         }
 
-        private static List<Beteg> BetegListaOlvas()
+        private static LancoltLista BetegListaOlvas()
         {
-            List<Beteg> BetegLista = new List<Beteg>();
+            LancoltLista BetegLista = new LancoltLista();
             StreamReader streamReader = null;
             while (streamReader == null)
             {
@@ -152,7 +142,7 @@ namespace IHospital
                     }
                 } catch (HibásFájlKivétel e)
                 {
-                    return new List<Beteg>();
+                    return new LancoltLista();
                 }
             }
             streamReader.Close();

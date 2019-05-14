@@ -20,5 +20,12 @@ namespace IHospital.Entitások
         { this.msg = msg; }
     }
 
+    class NincsIlyenBetegKivétel : Exception
+    {
+        public string msg;
+        public NincsIlyenBetegKivétel(String msg)
+        { this.msg = msg; }
+    }
+
     class HibásFájlKivétel : Exception { }
 }

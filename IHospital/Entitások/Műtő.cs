@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IHospital.Entitások;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace IHospital
 {
     class Műtő
     {
-        public List<Beteg> betegek = new List<Beteg>();
+        public LancoltLista betegek = new LancoltLista();
         public int hasznaltPercek;
         public int SumSúlyosság;
         private string név;
@@ -22,21 +23,21 @@ namespace IHospital
 
         public Műtő(String név)
         {
-            betegek = new List<Beteg>();
+            betegek = new LancoltLista();
             hasznaltPercek = 0;
             SumSúlyosság = 0;
             this.név = név;
         }
 
-        public Műtő(List<Beteg> betegek, String név)
+        public Műtő(LancoltLista betegek, String név)
         {
             this.betegek = betegek;
-            foreach (var beteg in betegek)
+            for(int i = 0; i < betegek.Size(); i++)
             {
+                Beteg beteg = betegek.Get(i);
                 this.hasznaltPercek += beteg.Diagnózis.Műtétidőtartam;
                 this.SumSúlyosság += (int)beteg.Diagnózis.Súlyosság;
             }
-
         }
 
         public string getNév()

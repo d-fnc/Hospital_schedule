@@ -13,17 +13,16 @@ namespace IHospital
         public delegate void BetegFelvét(Beteg beteg);
         public event BetegFelvét Felvétel;
 
-        public delegate bool BetegMűtés(Beteg beteg);
+        public delegate void BetegMűtés(Beteg beteg);
         public event BetegMűtés Műtés;
 
         private readonly int MaxPercek = 480;
-        public List<Beteg> Betegek { get; set; }
-        public Rendező (List<Beteg> betegek, BetegMűtés műtés, BetegFelvét felvétel)
+        public LancoltLista Betegek { get; set; }
+        public Rendező (LancoltLista betegek, BetegMűtés műtés, BetegFelvét felvétel)
         {
             this.Felvétel = felvétel;
             this.Műtés = műtés;
             this.Betegek = betegek;
-            BetegRendezés();
         }
 
         public void Beosztás()
@@ -47,18 +46,20 @@ namespace IHospital
             Műtő műtő = new Műtő(MűtőNév);
             try
             {
-                if (Betegek.Count() == 0) throw new NincsenekBetegekKivétel(műtő.getNév());
-                List<Beteg> BetegekMásolat = Betegek.ToList();
-                int[] megoldás = new int[Betegek.Count()];
-                int[] legjobbMegoldás = new int[Betegek.Count()];
+                if (Betegek.Size() == 0) throw new NincsenekBetegekKivétel(műtő.getNév());
+                int[] megoldás = new int[Betegek.Size()];
+                int[] legjobbMegoldás = new int[Betegek.Size()];
                 Beoszt(0, 0, megoldás, legjobbMegoldás);
                 for (int i = 0; i < legjobbMegoldás.Length; i++)
                 {
                     if (legjobbMegoldás[i] == 1)
                     {
-                        műtő.Beoszt(BetegekMásolat[i]);
-                        Műtés(BetegekMásolat[i]);
+                        műtő.Beoszt(Betegek.Get(i));
                     }
+                }
+                for (int m = 0; m < műtő.betegek.Size(); m++)
+                {
+                    Műtés(műtő.betegek.Get(m));
                 }
                 if (műtő.hasznaltPercek <= 360) throw new TúlSokSzabadIdőKivétel(műtő.getNév());
             }
@@ -79,7 +80,7 @@ namespace IHospital
 
         private void Beoszt(int szint, int hasznaltPercek, int[] megoldás, int[] legjobbMegoldás)
         {
-            if (szint == Betegek.Count())
+            if (szint == Betegek.Size())
             {
                 if (BeosztásÉrték(megoldás) > BeosztásÉrték(legjobbMegoldás))
                 {
@@ -91,10 +92,10 @@ namespace IHospital
             }
             else
             {
-                if (hasznaltPercek + Betegek[szint].Diagnózis.Műtétidőtartam <= MaxPercek)
+                if (hasznaltPercek + Betegek.Get(szint).Diagnózis.Műtétidőtartam <= MaxPercek)
                 {
                     megoldás[szint] = 1;
-                    Beoszt(szint + 1, hasznaltPercek + Betegek[szint].Diagnózis.Műtétidőtartam, megoldás, legjobbMegoldás);
+                    Beoszt(szint + 1, hasznaltPercek + Betegek.Get(szint).Diagnózis.Műtétidőtartam, megoldás, legjobbMegoldás);
                 }
                 else
                 {
@@ -111,14 +112,9 @@ namespace IHospital
             int összÉrték = 0;
             for (int i=0; i<beosztás.Length; i++)
             {
-                if (beosztás[i] == 1) összÉrték += (int)Betegek[i].Diagnózis.Súlyosság;
+                if (beosztás[i] == 1) összÉrték += (int)Betegek.Get(i).Diagnózis.Súlyosság;
             }
             return összÉrték;
-        }
-
-        public void BetegRendezés()
-        {
-            Betegek.Sort((x,y) => y.Diagnózis.Súlyosság.CompareTo(x.Diagnózis.Súlyosság));
         }
 
         public void BetegFelvétel()
@@ -233,15 +229,15 @@ namespace IHospital
                     return;
             }
 
-            BetegRendezés();
         }
 
         public void BetegTörlés()
         {
             Console.WriteLine("Adja meg a műtendő beteg nevét!");
             string név = Console.ReadLine();
-            Beteg beteg = Betegek.Find(x => x.Név.Equals(név));
-            if (beteg != null) Műtés(beteg);
+            Beteg beteg = Betegek.Find(név);
+            if(beteg != null) Műtés(beteg);
+            else Console.WriteLine("Nincs ilyen nevű beteg!");
         }
     }
 

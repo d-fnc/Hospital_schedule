@@ -56,6 +56,7 @@
     <Compile Include="Diagnózis\VakbélGyulladás.cs" />
     <Compile Include="Diagnózis\VégtagTörés.cs" />
     <Compile Include="Entitások\Kivételek.cs" />
+    <Compile Include="Entitások\LancoltLista.cs" />
     <Compile Include="Entitások\Műtő.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
